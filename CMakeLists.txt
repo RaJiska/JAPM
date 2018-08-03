@@ -9,6 +9,8 @@ set (LIB_DIR "${PROJECT_SOURCE_DIR}/lib")
 set (SRCS
 	"${SOURCE_DIR}/main.c"
 	"${SOURCE_DIR}/japm.c"
+	"${SOURCE_DIR}/pbo/pbo_open.c"
+	"${SOURCE_DIR}/pbo/pbo_close.c"
 )
 
 

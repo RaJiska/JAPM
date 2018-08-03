@@ -11,7 +11,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
 #include "japm_conf.h"
 
 #define UNUSED __attribute__((unused))
