@@ -10,5 +10,9 @@
 
 int main(int argc, char * const *argv)
 {
+	arguments_t args;
 
+	args.input = argv[1];
+	args.output = argv[2];
+	return (japm(&args));
 }
