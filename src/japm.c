@@ -39,6 +39,7 @@ bool japm(const arguments_t *args)
 	case JAPM_ACTION_UNPACK:
 		if (!pbo_open(args->input, &pbo))
 			return false;
+		pbo_retrieve_entries(&pbo);
 		break;
 	default:
 		return false;

@@ -18,4 +18,5 @@ void pbo_close(pbo_t *pbo)
 	if (fclose(pbo->f) == EOF)
 		fprintf(stderr, "Could not close %s: %s\n", pbo->filename, strerror(errno));
 	free(pbo->filename);
+	list_destroy(&pbo->entries, LIST_FREE_PTR, NULL);
 }

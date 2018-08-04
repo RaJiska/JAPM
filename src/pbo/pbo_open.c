@@ -20,7 +20,8 @@ bool pbo_open(const char *file, pbo_t *pbo)
 		return FNC_PERROR_RET(bool, false, "Could not get size of %s", file);
 	if ((pbo->map = mmap(NULL, pbo->len, PROT_READ, MAP_SHARED, fileno(pbo->f), 0)) == (void *) -1)
 		return FNC_PERROR_RET(bool, false, "Could not map %s", file);
-	if (memcmp(pbo->map, &(unsigned char []) PBO_MAGIC, PBO_MAGIC_SZ))
+	if (memcmp(pbo->map, &PBO_MAGIC[0], PBO_MAGIC_SZ) &&
+		memcmp(pbo->map, &PBO_MAGICALT[0], PBO_MAGICALT_SZ))
 		return FNC_ERROR_RET(bool, false, "Incorrect magic bytes in %s", file);
 	pbo->filename = strdup(file);
 	pbo->entries = NULL;
