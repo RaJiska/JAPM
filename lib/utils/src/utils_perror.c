@@ -6,13 +6,19 @@
  */
 
 #include "utils.h"
+#include <stdarg.h>
 
 inline long long int utils_perror(
+	long long int ret,
 	const char *s,
-	const char *file,
-	int line,
-	int ret)
+	...)
 {
-	fprintf(stderr, "%s:%d: %s: %s\n", file, line, s, strerror(errno));
+	int last_errno = errno;
+	va_list va;
+
+	va_start(va, s);
+	vfprintf(stderr, s, va);
+	va_end(va);
+	fprintf(stderr, ": %s\n", strerror(errno));
 	return ret;
 }

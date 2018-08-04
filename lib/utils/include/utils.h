@@ -23,8 +23,8 @@
 #include <sys/types.h>
 #include <sys/sysmacros.h>
 
-long long int utils_perror(const char *s, const char *file, int line, int ret);
-long long int utils_error(const char *s, const char *file, int line, int ret);
+long long int utils_perror(long long int ret, const char *s, ...);
+long long int utils_error(long long int ret, const char *s, ...);
 char **utils_strsplit(const char *str, const char *delims, int max_delims);
 char *utils_strjoin(char * const *wt, const char *separator);
 size_t utils_wt_count(char * const *wt);

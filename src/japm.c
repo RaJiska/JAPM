@@ -11,39 +11,38 @@
 #include <string.h>
 #include <errno.h>
 #include "utils.h"
-
 #include "japm.h"
-
-static bool stat_file(const char *file, struct stat *st)
-{
-	if (stat(file, st) == -1) {
-		fprintf(stderr, "Could not stat %s: %s\n", file, strerror(errno));
-		return false;
-	}
-	return true;
-}
+#include "pbo.h"
 
 static inline enum japm_action determine_action(const arguments_t *args)
 {
-	struct stat st_in;
-	struct stat st_out;
+	struct stat st;
 
-	if (!stat_file(args->input, &st_in) || !stat_file(args->output, &st_out))
-		return JAPM_ACTION_NONE;
-	if (S_ISREG(st_in.st_mode) && S_ISDIR(st_out.st_mode))
+	if (stat(args->input, &st) == -1)
+		return FNC_PERROR_RET(enum japm_action, JAPM_ACTION_NONE, "Could not stat %s", args->input);
+	if (S_ISREG(st.st_mode))
 		return JAPM_ACTION_UNPACK;
-	if (S_ISDIR(st_in.st_mode) && S_ISREG(st_out.st_mode))
+	if (S_ISDIR(st.st_mode))
 		return JAPM_ACTION_PACK;
-	return FNC_ERROR_RET("Wrong file type for either input or output",
-		enum japm_action,
-		JAPM_ACTION_NONE);
+	return FNC_ERROR_RET(enum japm_action, JAPM_ACTION_NONE, "Wrong file type for %s", args->input);
 }
 
 bool japm(const arguments_t *args)
 {
+	pbo_t pbo;
 	enum japm_action action = determine_action(args);
 
-	if (action == JAPM_ACTION_NONE)
+	switch (action)
+	{
+	case JAPM_ACTION_PACK:
+		break;
+	case JAPM_ACTION_UNPACK:
+		if (!pbo_open(args->input, &pbo))
+			return false;
+		break;
+	default:
 		return false;
+	}
+	pbo_close(&pbo);
 	return true;
 }

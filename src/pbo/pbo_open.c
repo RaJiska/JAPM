@@ -10,21 +10,19 @@
 #include <sys/mman.h>
 #include "pbo.h"
 #include "japm.h"
+#include "utils.h"
 
 bool pbo_open(const char *file, pbo_t *pbo)
 {
+	if ((pbo->f = fopen(file, "rb")) == NULL)
+		return FNC_PERROR_RET(bool, false, "Could not open %s", file);
+	if (fseek(pbo->f, 0, SEEK_END) == -1 || (pbo->len = ftell(pbo->f)) == -1)
+		return FNC_PERROR_RET(bool, false, "Could not get size of %s", file);
+	if ((pbo->map = mmap(NULL, pbo->len, PROT_READ, MAP_SHARED, fileno(pbo->f), 0)) == (void *) -1)
+		return FNC_PERROR_RET(bool, false, "Could not map %s", file);
+	if (memcmp(pbo->map, &(unsigned char []) PBO_MAGIC, PBO_MAGIC_SZ))
+		return FNC_ERROR_RET(bool, false, "Incorrect magic bytes in %s", file);
 	pbo->filename = strdup(file);
-	if ((pbo->f = fopen(file, "rb")) == NULL) {
-		fprintf(stderr, "Could not open %s: %s\n", file, strerror(errno));
-		return false;
-	}
-	if (fseek(pbo->f, 0, SEEK_END) == -1 || (pbo->len = ftell(pbo->f) == -1)) {
-		fprintf(stderr, "Could not get size of %s: %s\n", file, strerror(errno));
-		return false;
-	}
-	if ((pbo->map = mmap(NULL, pbo->len, PROT_READ, MAP_SHARED, fileno(pbo->f), 0)) == (void *) -1) {
-		fprintf(stderr, "Could not map %s: %s\n", file, strerror(errno));
-		return false;
-	}
+	pbo->entries = NULL;
 	return true;
 }

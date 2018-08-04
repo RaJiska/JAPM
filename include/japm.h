@@ -14,10 +14,15 @@
 #include "japm_conf.h"
 
 #define UNUSED __attribute__((unused))
-#define FNC_PERROR(elm) utils_perror(elm, __FILE__, __LINE__, 0)
-#define FNC_PERROR_RET(elm, type, ret) ((type) (utils_perror(elm, __FILE__, __LINE__, ret)))
-#define FNC_ERROR(elm) utils_error(elm, __FILE__, __LINE__, 0)
-#define FNC_ERROR_RET(elm, type, ret) ((type) (utils_error(elm, __FILE__, __LINE__, ret)))
+#define STRINGIFY(elm) #elm
+#define TOSTRING(elm) STRINGIFY(elm)
+
+#define FNC_WARN(elm, ...) utils_perror(0, __FILE__ ":" TOSTRING(__LINE__) ": WARNING: " elm, __VA_ARGS__)
+#define FNC_WARN_RET(type, ret, elm, ...) ((type) (utils_perror(0, __FILE__ ":" TOSTRING(__LINE__) ": WARNING: " elm, __VA_ARGS__)))
+#define FNC_PERROR(elm, ...) utils_perror(0, __FILE__ ":" TOSTRING(__LINE__) ": ERROR: " elm, __VA_ARGS__)
+#define FNC_PERROR_RET(type, ret, elm, ...) (((type) (utils_perror(0, __FILE__ ":" TOSTRING(__LINE__) ": ERROR: " elm, __VA_ARGS__))))
+#define FNC_ERROR(elm, ...) utils_error(0, __FILE__ ":" TOSTRING(__LINE__) ": ERROR: " elm, __VA_ARGS__)
+#define FNC_ERROR_RET(type, ret, elm, ...) ((type) (utils_error(0, __FILE__ ":" TOSTRING(__LINE__) ": ERROR: " elm, __VA_ARGS__)))
 
 typedef struct
 {
