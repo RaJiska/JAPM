@@ -2,7 +2,8 @@ cmake_minimum_required (VERSION 2.6)
 project (JAPM)
 
 set (JAPM_VERSION_MAJOR 0)
-set (JAPM_VERSION_MINOR 1)
+set (JAPM_VERSION_MINOR 2)
+set (JAPM_PATH_MAX_LENGTH 1024)
 set (INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 set (SOURCE_DIR "${PROJECT_SOURCE_DIR}/src")
 set (LIB_DIR "${PROJECT_SOURCE_DIR}/lib")
@@ -16,8 +17,8 @@ set (SRCS
 
 
 configure_file(
-	"include/japm_conf.h.in"
-	"include/japm_conf.h"
+	"${INCLUDE_DIR}/japm_conf.h.in"
+	"${INCLUDE_DIR}/japm_conf.h"
 )
 
 include_directories("${INCLUDE_DIR}")

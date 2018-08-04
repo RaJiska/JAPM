@@ -6,39 +6,84 @@
  */
 
 #include <string.h>
+#include <ctype.h>
 #include "japm.h"
 #include "pbo.h"
 #include "list.h"
 #include "utils.h"
 
+static char *get_unknown_filename(char *buf)
+{
+	static int unknown_file_no = 0;
+
+	snprintf(buf, JAPM_PATH_MAX_LENGTH, "%s%d%s",
+		JAPM_UNKNOWN_FILENAME,
+		unknown_file_no, JAPM_UNKNOWN_FILEEXT);
+	++unknown_file_no;
+	FNC_WARN("Entry with special name renamed -> %s", buf);
+	return buf;
+}
+
+static const char *get_proper_filename(const char *filename, char *buf)
+{
+	char *s;
+	size_t len = strlen(filename);
+
+	strncpy(buf, filename, JAPM_PATH_MAX_LENGTH - 1)[JAPM_PATH_MAX_LENGTH - 1] = 0;
+	utils_clearstr(buf);
+	while (utils_strreplace(buf, "/", "\\"));
+	/* Security Checks */
+	if (*buf == '\\' || strstr(buf, "..\\") || strpbrk(buf, JAPM_PATH_FORBIDDEN_CHARS))
+		return get_unknown_filename(buf);
+	for (size_t it = 0; it < len; ++it) {
+		if (!isprint(buf[it]))
+			return get_unknown_filename(buf);
+	}
+	/* Ensure PBO doesn't contain files colliding with our unknown files */
+	if ((s = strchr(buf, '\\'))) {
+		if (strncmp(buf, JAPM_UNKNOWN_FILE_DIR, s - buf))
+			return get_unknown_filename(buf);
+	}
+	return buf;
+}
+
 static inline byte_t *skip_header_and_extension(byte_t *map)
 {
-	if (*map == 0xA0)
-		map += PBO_MAGIC_SZ;
+	byte_t *map_original = map;
+
+	map += PBO_MAGIC_SZ;
+	if (!*map)
+		++map;
 	else {
-		map += PBO_MAGICALT_SZ;
 		for (; *map || *(map + 1); ++map);
 		map += 2;
 	}
 	return map;
 }
 
-void pbo_retrieve_entries(pbo_t *pbo)
+bool pbo_retrieve_entries(pbo_t *pbo)
 {
 	pbo_entry_t *entry;
+	unsigned char buf[JAPM_PATH_MAX_LENGTH];
 	byte_t *curr_block = skip_header_and_extension(pbo->map);
 
 	while (*curr_block) {
-		if ((entry = malloc(sizeof(pbo_entry_t))) == NULL) {
+		if ((entry = malloc(sizeof(pbo_entry_t))) == NULL)
+			return FNC_PERROR_RET(bool, false, "Memory allocation failure");
+		entry->filename = strdup(get_proper_filename(curr_block, &buf[0]));
+		if (!entry->filename) {
 			FNC_PERROR("Memory allocation failure");
-			break;
+			free(entry);
+			return false;
 		}
-		entry->filename = curr_block;
 		entry->meta = (pbo_entry_meta_t *) (strchr(curr_block, 0) + 1);
 		if (!list_push(&pbo->entries, entry)) {
 			FNC_PERROR("List allocation failure");
+			free(entry->filename);
 			free(entry);
+			return false;
 		}
 		curr_block =  (((byte_t *) entry->meta) + sizeof(pbo_entry_meta_t));
 	}
+	return true;
 }

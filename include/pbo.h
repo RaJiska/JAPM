@@ -18,13 +18,7 @@ static const unsigned char PBO_MAGIC[] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
-static const unsigned char PBO_MAGICALT[] = {
-	0x0A, 0x73, 0x72, 0x65, 0x56, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
 #define PBO_MAGIC_SZ sizeof(PBO_MAGIC)
-#define PBO_MAGICALT_SZ sizeof(PBO_MAGICALT)
 #define PBO_PACK_UNCOMPRESSED 0x00000000
 #define PBO_PACK_PACKED 0x43707273
 #define PBO_PACK_PE 0x56657273
@@ -54,7 +48,7 @@ typedef struct
 } pbo_t;
 
 bool pbo_open(const char *file, pbo_t *pbo);
-void pbo_retrieve_entries(pbo_t *pbo);
+bool pbo_retrieve_entries(pbo_t *pbo);
 void pbo_close(pbo_t *pbo);
 
 #endif /* PBO_H_ */
