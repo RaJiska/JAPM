@@ -43,6 +43,7 @@ bool japm(const arguments_t *args)
 		if (!pbo_open(args->input, &pbo))
 			return false;
 		pbo_retrieve_entries(&pbo);
+		pbo_extract(&pbo);
 		break;
 	default:
 		return false;

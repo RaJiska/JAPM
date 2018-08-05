@@ -57,6 +57,7 @@ byte_t *pbo_get_header_block(byte_t *map);
 byte_t *pbo_get_data_block(byte_t *header_block);
 byte_t *pbo_get_checksum_block(byte_t *map, size_t file_len);
 bool pbo_retrieve_entries(pbo_t *pbo);
+bool pbo_extract(const pbo_t *pbo);
 void pbo_close(pbo_t *pbo);
 
 #endif /* PBO_H_ */

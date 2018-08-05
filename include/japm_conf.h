@@ -19,6 +19,8 @@
 #define JAPM_UNKNOWN_FILENAME "unknown"
 #define JAPM_UNKNOWN_FILEEXT ".txt"
 
+#define JAPM_FILE_BUFFER 1024
+
 static const char *JAPM_PATH_FORBIDDEN_FILENAMES[] = {
 	"CON", "PRN", "AUX", "NUL",
 	"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",

@@ -15,6 +15,7 @@ set (SRCS
 	"${SOURCE_DIR}/pbo/pbo_get_data_block.c"
 	"${SOURCE_DIR}/pbo/pbo_get_checksum_block.c"
 	"${SOURCE_DIR}/pbo/pbo_retrieve_entries.c"
+	"${SOURCE_DIR}/pbo/pbo_extract.c"
 	"${SOURCE_DIR}/pbo/pbo_close.c"
 )
 

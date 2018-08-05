@@ -31,15 +31,19 @@ static bool path_is_valid(const char *path)
 	if (!wt)
 		return FNC_ERROR_RET(bool, false, "Could not allocate memory");
 	for (size_t it = 0; wt[it]; ++it) {
-		for (int ij = 0; ij < sizeof(JAPM_PATH_FORBIDDEN_FILENAMES); ++ij) {
-			if (!strcmp(JAPM_PATH_FORBIDDEN_FILENAMES[ij], wt[it]))
+		for (int ij = 0; ij < sizeof(JAPM_PATH_FORBIDDEN_FILENAMES) / sizeof(char *); ++ij) {
+			if (!strcmp(JAPM_PATH_FORBIDDEN_FILENAMES[ij], wt[it])) {
+				utils_wt_destroy(wt);
+				return false;
+			}
+		}
+		if (strpbrk(wt[it], JAPM_PATH_FORBIDDEN_CHARS) ||
+			strpbrk(wt[it] + strlen(wt[it]) - 1, JAPM_PATH_FORBIDDEN_ENDCHARS)) {
+				utils_wt_destroy(wt);
 				return false;
 		}
-
-		if (strpbrk(wt[it], JAPM_PATH_FORBIDDEN_CHARS) ||
-			strpbrk(wt[it] + strlen(wt[it]) - 1, JAPM_PATH_FORBIDDEN_ENDCHARS))
-			return false;
 	}
+	utils_wt_destroy(wt);
 	return true;
 }
 
@@ -60,7 +64,7 @@ static const char *get_proper_filename(const char *filename, char *buf)
 	}
 	/* Ensure PBO doesn't contain files colliding with our unknown files */
 	if ((s = strchr(buf, '\\'))) {
-		if (strncmp(buf, JAPM_UNKNOWN_FILE_DIR, s - buf))
+		if (!strncmp(buf, JAPM_UNKNOWN_FILE_DIR, s - buf))
 			return get_unknown_filename(buf);
 	}
 	return buf;
