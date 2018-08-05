@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include "japm.h"
 #include "list.h"
 
 static const unsigned char PBO_MAGIC[] = {
@@ -41,13 +42,19 @@ typedef struct
 typedef struct
 {
 	FILE *f;
-	size_t len;
-	void *map;
+	off_t len;
+	byte_t *map;
+	byte_t *map_header_block;
+	byte_t *map_data_block;
+	byte_t *map_checksum_block;
 	char *filename;
 	list_t *entries;
 } pbo_t;
 
 bool pbo_open(const char *file, pbo_t *pbo);
+byte_t *pbo_get_header_block(byte_t *map);
+byte_t *pbo_get_data_block(byte_t *header_block);
+byte_t *pbo_get_checksum_block(byte_t *map, size_t file_len);
 bool pbo_retrieve_entries(pbo_t *pbo);
 void pbo_close(pbo_t *pbo);
 

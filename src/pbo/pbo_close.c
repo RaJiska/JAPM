@@ -10,13 +10,14 @@
 #include <errno.h>
 #include <sys/mman.h>
 #include "pbo.h"
+#include "utils.h"
 
 void pbo_close(pbo_t *pbo)
 {
 	if (munmap(pbo->map, pbo->len) == -1)
-		fprintf(stderr, "Could not unmap %s: %s\n", pbo->filename, strerror(errno));
+		FNC_WARN("Could not unmap %s\n", pbo->filename);
 	if (fclose(pbo->f) == EOF)
-		fprintf(stderr, "Could not close %s: %s\n", pbo->filename, strerror(errno));
+		FNC_WARN("Could not close %s\n", pbo->filename);
 	free(pbo->filename);
 	while (pbo->entries) {
 		free(((pbo_entry_t *) (pbo->entries->elm))->filename);

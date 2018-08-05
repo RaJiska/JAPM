@@ -47,25 +47,11 @@ static const char *get_proper_filename(const char *filename, char *buf)
 	return buf;
 }
 
-static inline byte_t *skip_header_and_extension(byte_t *map)
-{
-	byte_t *map_original = map;
-
-	map += PBO_MAGIC_SZ;
-	if (!*map)
-		++map;
-	else {
-		for (; *map || *(map + 1); ++map);
-		map += 2;
-	}
-	return map;
-}
-
 bool pbo_retrieve_entries(pbo_t *pbo)
 {
 	pbo_entry_t *entry;
 	unsigned char buf[JAPM_PATH_MAX_LENGTH];
-	byte_t *curr_block = skip_header_and_extension(pbo->map);
+	byte_t *curr_block = pbo->map_header_block;
 
 	while (*curr_block) {
 		if ((entry = malloc(sizeof(pbo_entry_t))) == NULL)

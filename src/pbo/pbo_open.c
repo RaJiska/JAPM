@@ -16,7 +16,7 @@ bool pbo_open(const char *file, pbo_t *pbo)
 {
 	if ((pbo->f = fopen(file, "rb")) == NULL)
 		return FNC_PERROR_RET(bool, false, "Could not open %s", file);
-	if (fseek(pbo->f, 0, SEEK_END) == -1 || (pbo->len = ftell(pbo->f)) == -1)
+	if (fseeko(pbo->f, 0, SEEK_END) == -1 || (pbo->len = ftello(pbo->f)) == -1)
 		return FNC_PERROR_RET(bool, false, "Could not get size of %s", file);
 	if ((pbo->map = mmap(NULL, pbo->len, PROT_READ, MAP_SHARED, fileno(pbo->f), 0)) == (void *) -1)
 		return FNC_PERROR_RET(bool, false, "Could not map %s", file);
@@ -24,5 +24,8 @@ bool pbo_open(const char *file, pbo_t *pbo)
 		return FNC_ERROR_RET(bool, false, "Incorrect magic bytes in %s", file);
 	pbo->filename = strdup(file);
 	pbo->entries = NULL;
+	pbo->map_header_block = pbo_get_header_block(pbo->map);
+	pbo->map_data_block = pbo_get_data_block(pbo->map_header_block);
+	pbo->map_checksum_block = pbo_get_checksum_block(pbo->map, pbo->len);
 	return true;
 }
