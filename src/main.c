@@ -14,6 +14,7 @@ static void print_help(const char *myself, int exit_code)
 		"\t%s [OPTIONS] input output\n"
 		"\n"
 		"OPTIONS\n"
+		"\t-h\tPrint this help message discarding other options\n"
 		"\t-q\tQuiet: does not print status\n"
 		"\t-w\tNo warning\n", myself);
 	exit(exit_code);
@@ -21,7 +22,7 @@ static void print_help(const char *myself, int exit_code)
 
 int main(int argc, char * const *argv)
 {
-	arguments_t args;
+	arguments_t args = { 0 };
 
 	if (argc < 3)
 		print_help(argv[0], EXIT_FAILURE);

@@ -10,8 +10,6 @@
 
 byte_t *pbo_get_header_block(byte_t *map)
 {
-	byte_t *map_original = map;
-
 	map += PBO_MAGIC_SZ;
 	if (!*map)
 		++map;

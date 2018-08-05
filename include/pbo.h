@@ -20,6 +20,7 @@ static const unsigned char PBO_MAGIC[] = {
 };
 
 #define PBO_MAGIC_SZ sizeof(PBO_MAGIC)
+#define PBO_CHECKSUM_SZ 20
 #define PBO_PACK_UNCOMPRESSED 0x00000000
 #define PBO_PACK_PACKED 0x43707273
 #define PBO_PACK_PE 0x56657273

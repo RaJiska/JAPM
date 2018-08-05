@@ -16,12 +16,31 @@ static char *get_unknown_filename(char *buf)
 {
 	static int unknown_file_no = 0;
 
-	snprintf(buf, JAPM_PATH_MAX_LENGTH, "%s%d%s",
-		JAPM_UNKNOWN_FILENAME,
+	snprintf(buf, JAPM_PATH_MAX_LENGTH, "%s\\%s%d%s",
+		JAPM_UNKNOWN_FILE_DIR, JAPM_UNKNOWN_FILENAME,
 		unknown_file_no, JAPM_UNKNOWN_FILEEXT);
 	++unknown_file_no;
 	FNC_WARN("Entry with special name renamed -> %s", buf);
 	return buf;
+}
+
+static bool path_is_valid(const char *path)
+{
+	char **wt = utils_strsplit(path, "\\", 0);
+
+	if (!wt)
+		return FNC_ERROR_RET(bool, false, "Could not allocate memory");
+	for (size_t it = 0; wt[it]; ++it) {
+		for (int ij = 0; ij < sizeof(JAPM_PATH_FORBIDDEN_FILENAMES); ++ij) {
+			if (!strcmp(JAPM_PATH_FORBIDDEN_FILENAMES[ij], wt[it]))
+				return false;
+		}
+
+		if (strpbrk(wt[it], JAPM_PATH_FORBIDDEN_CHARS) ||
+			strpbrk(wt[it] + strlen(wt[it]) - 1, JAPM_PATH_FORBIDDEN_ENDCHARS))
+			return false;
+	}
+	return true;
 }
 
 static const char *get_proper_filename(const char *filename, char *buf)
@@ -30,10 +49,10 @@ static const char *get_proper_filename(const char *filename, char *buf)
 	size_t len = strlen(filename);
 
 	strncpy(buf, filename, JAPM_PATH_MAX_LENGTH - 1)[JAPM_PATH_MAX_LENGTH - 1] = 0;
-	utils_clearstr(buf);
-	while (utils_strreplace(buf, "/", "\\"));
+	while (strstr(buf, "\\\\"))
+		while (utils_strreplace(buf, "\\\\", "\\"));
 	/* Security Checks */
-	if (*buf == '\\' || strstr(buf, "..\\") || strpbrk(buf, JAPM_PATH_FORBIDDEN_CHARS))
+	if (*buf == '\\' || strstr(buf, "..\\") || !path_is_valid(buf))
 		return get_unknown_filename(buf);
 	for (size_t it = 0; it < len; ++it) {
 		if (!isprint(buf[it]))
@@ -69,7 +88,7 @@ bool pbo_retrieve_entries(pbo_t *pbo)
 			free(entry);
 			return false;
 		}
-		curr_block =  (((byte_t *) entry->meta) + sizeof(pbo_entry_meta_t));
+		curr_block = (((byte_t *) entry->meta) + sizeof(pbo_entry_meta_t));
 	}
 	return true;
 }

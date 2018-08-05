@@ -14,6 +14,8 @@
 #include "japm.h"
 #include "pbo.h"
 
+const arguments_t *ARGS = NULL;
+
 static inline enum japm_action determine_action(const arguments_t *args)
 {
 	struct stat st;
@@ -32,6 +34,7 @@ bool japm(const arguments_t *args)
 	pbo_t pbo;
 	enum japm_action action = determine_action(args);
 
+	ARGS = args;
 	switch (action)
 	{
 	case JAPM_ACTION_PACK:

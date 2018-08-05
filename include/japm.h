@@ -31,6 +31,8 @@ typedef struct
 {
 	char *input;
 	char *output;
+	bool quiet;
+	bool no_warning;
 } arguments_t;
 
 enum japm_action
@@ -39,6 +41,8 @@ enum japm_action
 	JAPM_ACTION_PACK,
 	JAPM_ACTION_UNPACK
 };
+
+extern const arguments_t *ARGS;
 
 bool japm(const arguments_t *args);
 

@@ -9,5 +9,5 @@
 
 byte_t *pbo_get_checksum_block(byte_t *map, size_t file_len)
 {
-	return (map + file_len) - 20;
+	return (map + file_len) - PBO_CHECKSUM_SZ;
 }
