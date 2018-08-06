@@ -2,7 +2,7 @@
  * Copyright	: Copyright (C) 2018 Doriann Corlouër. All rights reserved.
  * File		: pbo_get_header_start.c
  * Author	: Doriann "Ra'Jiska" Corlouër
- * Created	: Sun Aug 0 11:31:33 2018
+ * Created	: Sun Aug 5th 11:31:33 2018
  */
 
 #include "japm.h"

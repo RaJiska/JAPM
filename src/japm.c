@@ -2,7 +2,7 @@
  * Copyright	: Copyright (C) 2018 Doriann Corlouër. All rights reserved.
  * File		: japm.c
  * Author	: Doriann "Ra'Jiska" Corlouër
- * Created	: Fri Aug 5 18:54:36 2018
+ * Created	: Fri Aug 4rth 18:54:36 2018
  */
 
 #include <sys/types.h>

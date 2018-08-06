@@ -1,6 +1,7 @@
 cmake_minimum_required (VERSION 2.6)
 project (JAPM)
 
+set (JAPM_NAME "JAPM (Just Another PBO Manager)")
 set (JAPM_VERSION_MAJOR 0)
 set (JAPM_VERSION_MINOR 2)
 set (JAPM_PATH_MAX_LENGTH 1024)
@@ -10,6 +11,8 @@ set (LIB_DIR "${PROJECT_SOURCE_DIR}/lib")
 set (SRCS
 	"${SOURCE_DIR}/main.c"
 	"${SOURCE_DIR}/japm.c"
+	"${SOURCE_DIR}/fs/fs_path_is_valid.c"
+	"${SOURCE_DIR}/fs/fs_path_clean.c"
 	"${SOURCE_DIR}/pbo/pbo_open.c"
 	"${SOURCE_DIR}/pbo/pbo_get_header_block.c"
 	"${SOURCE_DIR}/pbo/pbo_get_data_block.c"

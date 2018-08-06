@@ -2,13 +2,14 @@
  * Copyright	: Copyright (C) 2018 Doriann Corlouër. All rights reserved.
  * File		: pbo_retrieve_entries.c
  * Author	: Doriann "Ra'Jiska" Corlouër
- * Created	: Sat Aug 6 0:04:08 2018
+ * Created	: Sat Aug 5th 0:04:08 2018
  */
 
 #include <string.h>
 #include <ctype.h>
 #include "japm.h"
 #include "pbo.h"
+#include "fs.h"
 #include "list.h"
 #include "utils.h"
 
@@ -24,44 +25,14 @@ static char *get_unknown_filename(char *buf)
 	return buf;
 }
 
-static bool path_is_valid(const char *path)
-{
-	char **wt = utils_strsplit(path, "\\", 0);
-
-	if (!wt)
-		return FNC_ERROR_RET(bool, false, "Could not allocate memory");
-	for (size_t it = 0; wt[it]; ++it) {
-		for (int ij = 0; ij < sizeof(JAPM_PATH_FORBIDDEN_FILENAMES) / sizeof(char *); ++ij) {
-			if (!strcmp(JAPM_PATH_FORBIDDEN_FILENAMES[ij], wt[it])) {
-				utils_wt_destroy(wt);
-				return false;
-			}
-		}
-		if (strpbrk(wt[it], JAPM_PATH_FORBIDDEN_CHARS) ||
-			strpbrk(wt[it] + strlen(wt[it]) - 1, JAPM_PATH_FORBIDDEN_ENDCHARS)) {
-				utils_wt_destroy(wt);
-				return false;
-		}
-	}
-	utils_wt_destroy(wt);
-	return true;
-}
-
 static const char *get_proper_filename(const char *filename, char *buf)
 {
 	char *s;
-	size_t len = strlen(filename);
 
 	strncpy(buf, filename, JAPM_PATH_MAX_LENGTH - 1)[JAPM_PATH_MAX_LENGTH - 1] = 0;
-	while (strstr(buf, "\\\\"))
-		while (utils_strreplace(buf, "\\\\", "\\"));
-	/* Security Checks */
-	if (*buf == '\\' || strstr(buf, "..\\") || !path_is_valid(buf))
+	fs_path_clean(buf);
+	if (!fs_path_is_valid(buf))
 		return get_unknown_filename(buf);
-	for (size_t it = 0; it < len; ++it) {
-		if (!isprint(buf[it]))
-			return get_unknown_filename(buf);
-	}
 	/* Ensure PBO doesn't contain files colliding with our unknown files */
 	if ((s = strchr(buf, '\\'))) {
 		if (!strncmp(buf, JAPM_UNKNOWN_FILE_DIR, s - buf))

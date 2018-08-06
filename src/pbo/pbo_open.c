@@ -2,7 +2,7 @@
  * Copyright	: Copyright (C) 2018 Doriann Corlouër. All rights reserved.
  * File		: pbo_open.c
  * Author	: Doriann "Ra'Jiska" Corlouër
- * Created	: Fri Aug 5 22:51:50 2018
+ * Created	: Fri Aug 4rth 22:51:50 2018
  */
 
 #include <string.h>

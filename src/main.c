@@ -2,7 +2,7 @@
  * Copyright	: Copyright (C) 2018 Doriann Corlouër. All rights reserved.
  * File		: main.c
  * Author	: Doriann "Ra'Jiska" Corlouër
- * Created	: Fri Aug 5 19:42:51 2018
+ * Created	: Fri Aug 4rth 19:42:51 2018
  */
 
 #include <stdio.h>
@@ -14,9 +14,10 @@ static void print_help(const char *myself, int exit_code)
 		"\t%s [OPTIONS] input output\n"
 		"\n"
 		"OPTIONS\n"
-		"\t-h\tPrint this help message discarding other options\n"
+		"\t-h\tPrint this help message and discard other options\n"
 		"\t-q\tQuiet: does not print status\n"
-		"\t-w\tNo warning\n", myself);
+		"\t-w\tNo warning\n"
+		"\t-v\tDisplay version and discard other options\n", myself);
 	exit(exit_code);
 }
 
