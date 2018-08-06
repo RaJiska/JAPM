@@ -68,4 +68,5 @@ bool pbo_extract(const pbo_t *pbo)
 		fclose(f);
 		curr_data += curr_entry->meta->data_size;
 	}
+	return true;
 }

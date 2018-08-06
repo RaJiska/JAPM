@@ -4,13 +4,15 @@ project (JAPM)
 set (JAPM_NAME "JAPM (Just Another PBO Manager)")
 set (JAPM_VERSION_MAJOR 0)
 set (JAPM_VERSION_MINOR 2)
-set (JAPM_PATH_MAX_LENGTH 1024)
+set (JAPM_PATH_MAX_LENGTH 260)
 set (INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 set (SOURCE_DIR "${PROJECT_SOURCE_DIR}/src")
 set (LIB_DIR "${PROJECT_SOURCE_DIR}/lib")
 set (SRCS
 	"${SOURCE_DIR}/main.c"
 	"${SOURCE_DIR}/japm.c"
+	"${SOURCE_DIR}/fs/fs_assemble_path.c"
+	"${SOURCE_DIR}/fs/fs_get_file_hierarchy.c"
 	"${SOURCE_DIR}/fs/fs_path_is_valid.c"
 	"${SOURCE_DIR}/fs/fs_path_clean.c"
 	"${SOURCE_DIR}/pbo/pbo_open.c"
@@ -38,6 +40,16 @@ target_include_directories(LIBLIST PUBLIC "${LIB_DIR}/list/include")
 file(GLOB LIBUTILS_SRC "${LIB_DIR}/utils/src/*.c")
 add_library(LIBUTILS STATIC ${LIBUTILS_SRC})
 target_include_directories(LIBUTILS PUBLIC "${LIB_DIR}/utils/include")
+
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE Release)
+endif()
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Winit-self -Wwrite-strings \
+	-Wcast-align -Wshadow -Wredundant-decls -Wfloat-equal -Wunreachable-code \
+	-Wundef -Wlogical-op -Winline -Wdouble-promotion -Wno-pointer-sign"
+)
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
 
 add_executable(JAPM ${SRCS})
 target_link_libraries(JAPM LIBLIST)

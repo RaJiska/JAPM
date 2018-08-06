@@ -12,7 +12,7 @@
 #define JAPM_VERSION_MAJOR 0
 #define JAPM_VERSION_MINOR 2
 
-#define JAPM_PATH_MAX_LENGTH 1024
+#define JAPM_PATH_MAX_LENGTH 260
 #define JAPM_PATH_FORBIDDEN_CHARS "<>:\"\\/|?*"
 #define JAPM_PATH_FORBIDDEN_ENDCHARS " ."
 
@@ -22,10 +22,7 @@
 
 #define JAPM_FILE_BUFFER 1024
 
-static const char *JAPM_PATH_FORBIDDEN_FILENAMES[] = {
-	"CON", "PRN", "AUX", "NUL",
-	"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-	"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
-};
+extern const int JAPM_PATH_FORBIDDEN_FILENAMES_COUNT;
+extern const char *JAPM_PATH_FORBIDDEN_FILENAMES[];
 
 #endif /* JAPM_CONF_H_ */

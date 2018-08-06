@@ -13,7 +13,6 @@ inline long long int utils_perror(
 	const char *s,
 	...)
 {
-	int last_errno = errno;
 	va_list va;
 
 	va_start(va, s);
