@@ -23,6 +23,7 @@ static bool create_directory(const char *path)
 	return true;
 }
 
+/* TODO: Pass it to the FS block */
 static FILE *create_path_and_file(const char *path)
 {
 	FILE *f;
@@ -34,13 +35,13 @@ static FILE *create_path_and_file(const char *path)
 		return FNC_ERROR_RET(FILE *, NULL, "Could not allocate memory");
 	strcat(strcpy(&buffer[0], ARGS->output), "/");
 	if (!create_directory(&buffer[0]))
-		return false;
+		return NULL;
 	for (; wt[elem + 1]; ++elem) {
 		strcat(strcpy(&buffer[0], ARGS->output), "/");
 		for (int it = 0; it <= elem; ++it)
 			strcat(strcat(&buffer[0], wt[it]), "/");
 		if (!create_directory(&buffer[0]))
-			return false;
+			return NULL;
 	}
 	strcat(&buffer[0], wt[elem]);
 	if ((f = fopen(&buffer[0], "w+b")) == NULL)
@@ -49,7 +50,11 @@ static FILE *create_path_and_file(const char *path)
 	return f;
 }
 
-/* TODO: Handle compression & set file last modified */
+/* TODO:
+	- Handle compression
+	- Set file last modified
+	- Multithreading
+*/
 bool pbo_extract(const pbo_t *pbo)
 {
 	FILE *f = NULL;
@@ -59,6 +64,11 @@ bool pbo_extract(const pbo_t *pbo)
 
 	for (; curr; curr = curr->next) {
 		curr_entry = curr->elm;
+		if (curr_entry->meta->packing != PBO_PACK_UNCOMPRESSED) {
+			FNC_WARN("File %s compressed - " JAPM_NAME_SHORT " does not"
+				"support this feature yet: Skipping", curr_entry->filename);
+			continue;
+		}
 		if (!(f = create_path_and_file(curr_entry->filename)))
 			return false;
 		if (!fwrite(curr_data, curr_entry->meta->data_size, 1, f) &&

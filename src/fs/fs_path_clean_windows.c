@@ -9,8 +9,13 @@
 #include "fs.h"
 #include "utils.h"
 
-void fs_path_clean(char *path)
+char *fs_path_clean_windows(char *path)
 {
+	char *found;
+
 	while (strstr(path, "\\\\"))
 		while (utils_strreplace(path, "\\\\", "\\"));
+	if (*((found = strrchr(path, '\\')) + 1) == 0)
+		*found = 0;
+	return path;
 }

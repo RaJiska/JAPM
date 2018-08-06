@@ -8,7 +8,9 @@
 #ifndef JAPM_CONF_H_
 #define JAPM_CONF_H_
 
-#define JAPM_NAME JAPM (Just Another PBO Manager)
+#define JAPM_NAME_SHORT "JAPM"
+#define JAPM_NAME_COMPLETE "Just Another PBO Manager"
+#define JAPM_NAME_FULL ""JAPM" ("Just Another PBO Manager")"
 #define JAPM_VERSION_MAJOR 0
 #define JAPM_VERSION_MINOR 2
 

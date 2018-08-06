@@ -53,6 +53,7 @@ typedef struct
 } pbo_t;
 
 bool pbo_open(const char *file, pbo_t *pbo);
+bool pbo_create(const char *path, const char *pbo);
 byte_t *pbo_get_header_block(byte_t *map);
 byte_t *pbo_get_data_block(byte_t *header_block);
 byte_t *pbo_get_checksum_block(byte_t *map, size_t file_len);

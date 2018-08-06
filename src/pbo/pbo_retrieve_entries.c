@@ -30,7 +30,7 @@ static const char *get_proper_filename(const char *filename, char *buf)
 	char *s;
 
 	strncpy(buf, filename, JAPM_PATH_MAX_LENGTH - 1)[JAPM_PATH_MAX_LENGTH - 1] = 0;
-	fs_path_clean(buf);
+	fs_path_clean_windows(buf);
 	if (!fs_path_is_valid(buf))
 		return get_unknown_filename(buf);
 	/* Ensure PBO doesn't contain files colliding with our unknown files */

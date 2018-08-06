@@ -40,14 +40,12 @@ bool japm(const arguments_t *args)
 {
 	pbo_t pbo;
 	enum japm_action action = determine_action(args);
-	list_t *test;
 
 	ARGS = args;
 	switch (action)
 	{
 	case JAPM_ACTION_PACK:
-		fs_get_file_hierarchy(args->input, &test);
-		list_destroy(&test, LIST_FREE_PTR, NULL);
+		pbo_create(args->input, args->output);
 		break;
 	case JAPM_ACTION_UNPACK:
 		if (!pbo_open(args->input, &pbo))
@@ -60,5 +58,4 @@ bool japm(const arguments_t *args)
 		return false;
 	}
 	return true;
-	printf("Hello");
 }

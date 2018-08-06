@@ -12,6 +12,7 @@
 #include "japm.h"
 #include "utils.h"
 
+/* TODO: Multithread the crawling */
 static bool recursive_retrieve(const char *path, list_t **list)
 {
 	DIR *dir = opendir(path);
@@ -49,11 +50,19 @@ static bool recursive_retrieve(const char *path, list_t **list)
 
 bool fs_get_file_hierarchy(const char *path, list_t **list)
 {
+	char *path_cleaned = strdup(path);
+
+	if (!path)
+		return FNC_PERROR_RET(bool, false, "Could not allocated memory");
+	/* TODO: Call clean Windows on WIN32 */
+	fs_path_clean_linux(path_cleaned);
 	*list = NULL;
-	if (!recursive_retrieve(path, list)) {
+	if (!recursive_retrieve(path_cleaned, list)) {
 		list_destroy(list, LIST_FREE_PTR, NULL);
 		*list = NULL;
+		free(path_cleaned);
 		return false;
 	}
+	free(path_cleaned);
 	return true;
 }

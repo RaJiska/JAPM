@@ -1,10 +1,13 @@
 cmake_minimum_required (VERSION 2.6)
 project (JAPM)
 
-set (JAPM_NAME "JAPM (Just Another PBO Manager)")
+set (JAPM_NAME_SHORT "\"JAPM\"")
+set (JAPM_NAME_COMPLETE "\"Just Another PBO Manager\"")
+set (JAPM_NAME_FULL "\"${JAPM_NAME_SHORT} (${JAPM_NAME_COMPLETE})\"")
 set (JAPM_VERSION_MAJOR 0)
 set (JAPM_VERSION_MINOR 2)
 set (JAPM_PATH_MAX_LENGTH 260)
+
 set (INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 set (SOURCE_DIR "${PROJECT_SOURCE_DIR}/src")
 set (LIB_DIR "${PROJECT_SOURCE_DIR}/lib")
@@ -14,8 +17,10 @@ set (SRCS
 	"${SOURCE_DIR}/fs/fs_assemble_path.c"
 	"${SOURCE_DIR}/fs/fs_get_file_hierarchy.c"
 	"${SOURCE_DIR}/fs/fs_path_is_valid.c"
-	"${SOURCE_DIR}/fs/fs_path_clean.c"
+	"${SOURCE_DIR}/fs/fs_path_clean_windows.c"
+	"${SOURCE_DIR}/fs/fs_path_clean_linux.c"
 	"${SOURCE_DIR}/pbo/pbo_open.c"
+	"${SOURCE_DIR}/pbo/pbo_create.c"
 	"${SOURCE_DIR}/pbo/pbo_get_header_block.c"
 	"${SOURCE_DIR}/pbo/pbo_get_data_block.c"
 	"${SOURCE_DIR}/pbo/pbo_get_checksum_block.c"
@@ -49,7 +54,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Winit-self -Wwrite-strings \
 	-Wcast-align -Wshadow -Wredundant-decls -Wfloat-equal -Wunreachable-code \
 	-Wundef -Wlogical-op -Winline -Wdouble-promotion -Wno-pointer-sign"
 )
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Ofast")
 
 add_executable(JAPM ${SRCS})
 target_link_libraries(JAPM LIBLIST)
