@@ -13,8 +13,35 @@
 #include "fs.h"
 #include "utils.h"
 
+static bool write_files(const char *pbo_name, FILE *f, const list_t *hierarchy)
+{
+	FILE *file;
+	unsigned char buf[JAPM_FILE_BUFFER];
+	size_t read_len;
+
+	for (; hierarchy; hierarchy = hierarchy->next) {
+		if (!(file = fopen(hierarchy->elm, "rb"))) {
+			fclose(file);
+			return FNC_ERROR_RET(bool, false, "Could not read file %s", hierarchy->elm);;
+		}
+		while ((read_len = fread(&buf[0], 1, JAPM_FILE_BUFFER, file))) {
+			if (!fwrite(&buf[0], read_len, 1, f)) {
+				fclose(file);
+				return FNC_ERROR_RET(bool, false, "Could not write to file %s", pbo_name);
+			}
+		}
+		if (ferror(file)) {
+			fclose(file);
+			return FNC_ERROR_RET(bool, false, "Could not read from file %s", hierarchy->elm);
+		}
+		fclose(file);
+	}
+	return true;
+}
+
 static bool write_headers(const char *pbo, const list_t *hierarchy, size_t path_len, FILE *f)
 {
+	char *str;
 	struct stat st;
 	pbo_entry_meta_t meta = { 0 };
 	unsigned char last_header[1 + sizeof(pbo_entry_meta_t)] = { 0 };
@@ -23,12 +50,15 @@ static bool write_headers(const char *pbo, const list_t *hierarchy, size_t path_
 		if (stat(curr->elm, &st) == -1)
 			return FNC_PERROR_RET(bool, false, "Could not stat file %s", curr->elm);
 		meta.data_size = st.st_size;
+		if (!(str = strdup(curr->elm + path_len)))
+			return FNC_PERROR_RET(bool, false, "Could not allocate memory");
 		/* If Linux */
-		while (utils_strreplace(curr->elm, "/", "\\"));
-		if (!fwrite(curr->elm + path_len, strlen(curr->elm) + 1 - path_len, 1, f) ||
+		while (utils_strreplace(str, "/", "\\"));
+		if (!fwrite(str, strlen(str) + 1, 1, f) ||
 			!fwrite(&meta, sizeof(pbo_entry_meta_t), 1, f)) {
 			return FNC_PERROR_RET(bool, false, "Could not write to file %s", pbo);
 		}
+		free(str);
 	}
 	if (!fwrite(&last_header[0], 1 + sizeof(pbo_entry_meta_t), 1, f))
 		return FNC_PERROR_RET(bool, false, "Could not write to file %s", pbo);
@@ -48,8 +78,11 @@ bool pbo_create(const char *path, const char *pbo)
 		return FNC_PERROR_RET(bool, false, "Could not write to file %s", pbo);
 	if (!fs_get_file_hierarchy(path, &hierarchy))
 		return false;
-	if (!write_headers(pbo, hierarchy, path_len, f))
+	if (!write_headers(pbo, hierarchy, path_len, f) || !write_files(pbo, f, hierarchy)) {
+		list_destroy(&hierarchy, LIST_FREE_PTR, NULL);
 		return false;
+	}
+	list_destroy(&hierarchy, LIST_FREE_PTR, NULL);
 	fclose(f);
 	return true;
 }
