@@ -5,6 +5,7 @@
  * Created	: Thu Jul 4 15:43:19 2018
  */
 
+#include <string.h>
 #include "utils.h"
 
 static void memmove_null(char *dest, const char *src, size_t len)

@@ -12,16 +12,8 @@
 #ifndef UTIL_H_
 # define UTIL_H_
 
-#include <time.h>
-#include <stdio.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
 #include <stdbool.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <sys/sysmacros.h>
+#include <stddef.h>
 
 long long int utils_perror(long long int ret, const char *s, ...);
 long long int utils_error(long long int ret, const char *s, ...);

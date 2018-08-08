@@ -5,6 +5,7 @@
  * Created	: Thu Jul 4 15:43:19 2018
  */
 
+#include <stdlib.h>
 #include "list.h"
 
 static void free_element(list_t **node)

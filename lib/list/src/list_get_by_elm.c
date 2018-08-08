@@ -5,6 +5,7 @@
  * Created	: Thu Jul 4 15:45:54 2018
  */
 
+#include <stdlib.h>
 #include "list.h"
 
 void *list_get_by_elm(list_t *list, const void *elm)

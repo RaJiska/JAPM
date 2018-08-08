@@ -5,6 +5,7 @@
  * Created	: Fri Jul 5 15:12:26 2018
  */
 
+#include <stdio.h>
 #include <stdarg.h>
 #include "utils.h"
 

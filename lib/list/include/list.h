@@ -8,8 +8,8 @@
 #ifndef LIST_H_
 #define LIST_H_
 
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 enum e_list
 {

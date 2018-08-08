@@ -5,6 +5,8 @@
  * Created	: Thu Jul 4 15:43:19 2018
  */
 
+#include <string.h>
+#include <stdlib.h>
 #include "utils.h"
 
 char *utils_strjoin(char * const *wt, const char *separator)

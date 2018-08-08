@@ -5,8 +5,11 @@
  * Created	: Fri Jul 5 14:38:27 2018
  */
 
-#include "utils.h"
+#include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
+#include <errno.h>
+#include "utils.h"
 
 inline long long int utils_perror(
 	long long int ret,

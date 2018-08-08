@@ -5,6 +5,7 @@
  * Created	: Thu Jul 4 15:55:51 2018
  */
 
+#include <string.h>
 #include "utils.h"
 
 static char *str_shiftright(char *str)

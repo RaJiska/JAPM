@@ -5,6 +5,8 @@
  * Created	: Thu Jul 4 15:43:19 2018
  */
 
+#include <stdlib.h>
+#include <string.h>
 #include "utils.h"
 
 char **utils_wt_pop_front(char **wt, char **str)

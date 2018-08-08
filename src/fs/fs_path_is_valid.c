@@ -6,6 +6,7 @@
  */
 
 #include <ctype.h>
+#include <string.h>
 #include "fs.h"
 #include "japm.h"
 #include "utils.h"

@@ -5,6 +5,7 @@
  * Created	: Thu Jul 4 15:43:19 2018
  */
 
+#include <stdlib.h>
 #include "list.h"
 
 void list_destroy(list_t **node, int free_lvl, void (*fnc)(void *))

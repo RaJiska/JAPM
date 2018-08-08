@@ -6,6 +6,7 @@
  * Created	: Thu Jul 4 15:43:19 2018
  */
 
+#include <stdlib.h>
 #include "utils.h"
 
 void utils_wt_destroy(char **wt)

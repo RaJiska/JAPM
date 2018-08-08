@@ -5,6 +5,9 @@
  * Created	: Thu Jul 4 15:58:31 2018
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "utils.h"
 
 static int count_delims(const char *str, const char *delims, int max)
