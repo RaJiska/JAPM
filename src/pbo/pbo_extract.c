@@ -24,20 +24,22 @@ static bool create_directory(const char *path)
 }
 
 /* TODO: Pass it to the FS block */
-static FILE *create_path_and_file(const char *path)
+static FILE *create_path_and_file(const char *base_dir, const char *path)
 {
 	FILE *f;
 	char buffer[JAPM_PATH_MAX_LENGTH] = { 0 };
-	char **wt = utils_strsplit(path, "\\", 0);
+	char **wt;
 	int elem = 0;
 
-	if (!wt)
+	if (strlen(base_dir) + strlen(path) >= JAPM_PATH_MAX_LENGTH)
+		return FNC_PERROR_RET(FILE *, NULL, "Path exceeds %d bytes", JAPM_PATH_MAX_LENGTH);
+	if (!(wt = utils_strsplit(path, "\\", 0)))
 		return FNC_ERROR_RET(FILE *, NULL, "Could not allocate memory");
-	strcat(strcpy(&buffer[0], ARGS->output), "/");
+	strcat(strcpy(&buffer[0], base_dir), "/");
 	if (!create_directory(&buffer[0]))
 		return NULL;
 	for (; wt[elem + 1]; ++elem) {
-		strcat(strcpy(&buffer[0], ARGS->output), "/");
+		strcat(strcpy(&buffer[0], base_dir), "/");
 		for (int it = 0; it <= elem; ++it)
 			strcat(strcat(&buffer[0], wt[it]), "/");
 		if (!create_directory(&buffer[0]))
@@ -55,7 +57,7 @@ static FILE *create_path_and_file(const char *path)
 	- Set file last modified
 	- Multithreading
 */
-bool pbo_extract(const pbo_t *pbo)
+bool pbo_extract(const pbo_t *pbo, const char *output_dir)
 {
 	FILE *f = NULL;
 	list_t *curr = pbo->entries;
@@ -69,7 +71,7 @@ bool pbo_extract(const pbo_t *pbo)
 				"support this feature yet: Skipping", curr_entry->filename);
 			continue;
 		}
-		if (!(f = create_path_and_file(curr_entry->filename)))
+		if (!(f = create_path_and_file(output_dir, curr_entry->filename)))
 			return false;
 		if (!fwrite(curr_data, curr_entry->meta->data_size, 1, f) &&
 			curr_entry->meta->data_size > 0)

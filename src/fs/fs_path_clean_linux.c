@@ -15,7 +15,7 @@ char *fs_path_clean_linux(char *path)
 
 	while (strstr(path, "//"))
 		while (utils_strreplace(path, "//", "/"));
-	if (*((found = strrchr(path, '/')) + 1) == 0)
+	if ((found = strrchr(path, '/')) && *found + 1 == 0)
 		*found = 0;
 	return path;
 }

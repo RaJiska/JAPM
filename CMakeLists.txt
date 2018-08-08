@@ -19,6 +19,7 @@ set (SRCS
 	"${SOURCE_DIR}/fs/fs_path_is_valid.c"
 	"${SOURCE_DIR}/fs/fs_path_clean_windows.c"
 	"${SOURCE_DIR}/fs/fs_path_clean_linux.c"
+	"${SOURCE_DIR}/fs/fs_path_get_last_link.c"
 	"${SOURCE_DIR}/pbo/pbo_open.c"
 	"${SOURCE_DIR}/pbo/pbo_create.c"
 	"${SOURCE_DIR}/pbo/pbo_get_header_block.c"

@@ -16,5 +16,6 @@ bool fs_get_file_hierarchy(const char *path, list_t **list);
 bool fs_path_is_valid(const char *path);
 char *fs_path_clean_windows(char *path);
 char *fs_path_clean_linux(char *path);
+char *fs_path_get_last_link(char *path);
 
 #endif /* FS_H_ */
