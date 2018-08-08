@@ -8,9 +8,12 @@
 #ifndef JAPM_CONF_H_
 #define JAPM_CONF_H_
 
+#define JAPM_AUTHOR "Doriann \"Ra'Jiska\" Corlouër"
+#define JAPM_AUTHOR_WEBSITE "http://rajiska.fr"
+#define JAPM_LICENSE "BSD-3"
+#define JAPM_LICENSE_WEBSITE "https://opensource.org/licenses/BSD-3-Clause"
 #define JAPM_NAME_SHORT "JAPM"
 #define JAPM_NAME_COMPLETE "Just Another PBO Manager"
-#define JAPM_NAME_FULL ""JAPM" ("Just Another PBO Manager")"
 #define JAPM_VERSION_MAJOR 0
 #define JAPM_VERSION_MINOR 2
 

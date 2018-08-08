@@ -1,9 +1,12 @@
 cmake_minimum_required (VERSION 2.6)
 project (JAPM)
 
+set (JAPM_AUTHOR "\"Doriann \\\"Ra'Jiska\\\" Corlouër\"")
+set (JAPM_AUTHOR_WEBSITE "\"http://rajiska.fr\"")
+set (JAPM_LICENSE "\"BSD-3\"")
+set (JAPM_LICENSE_WEBSITE "\"https://opensource.org/licenses/BSD-3-Clause\"")
 set (JAPM_NAME_SHORT "\"JAPM\"")
 set (JAPM_NAME_COMPLETE "\"Just Another PBO Manager\"")
-set (JAPM_NAME_FULL "\"${JAPM_NAME_SHORT} (${JAPM_NAME_COMPLETE})\"")
 set (JAPM_VERSION_MAJOR 0)
 set (JAPM_VERSION_MINOR 2)
 set (JAPM_PATH_MAX_LENGTH 260)
@@ -14,6 +17,10 @@ set (LIB_DIR "${PROJECT_SOURCE_DIR}/lib")
 set (SRCS
 	"${SOURCE_DIR}/main.c"
 	"${SOURCE_DIR}/japm.c"
+	"${SOURCE_DIR}/args/args_getopt.c"
+	"${SOURCE_DIR}/args/args_print_help.c"
+	"${SOURCE_DIR}/args/args_print_version.c"
+	"${SOURCE_DIR}/args/args_retrieve.c"
 	"${SOURCE_DIR}/fs/fs_assemble_path.c"
 	"${SOURCE_DIR}/fs/fs_get_file_hierarchy.c"
 	"${SOURCE_DIR}/fs/fs_path_is_valid.c"
@@ -53,7 +60,8 @@ endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Winit-self -Wwrite-strings \
 	-Wcast-align -Wshadow -Wredundant-decls -Wfloat-equal -Wunreachable-code \
-	-Wundef -Wlogical-op -Winline -Wdouble-promotion -Wno-pointer-sign"
+	-Wundef -Wlogical-op -Winline -Wdouble-promotion -Wno-pointer-sign \
+	-Wno-unused-variable"
 )
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Ofast")
 
