@@ -15,7 +15,11 @@
 
 static bool create_directory(const char *path)
 {
+#ifdef _WIN32
+	if (mkdir(path) == -1) {
+#else
 	if (mkdir(path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == -1) {
+#endif /* _WIN32 */
 		if (errno != EEXIST)
 			return FNC_PERROR_RET(bool, false,
 				"Could not create directory: %s", path);

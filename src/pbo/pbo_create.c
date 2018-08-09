@@ -53,8 +53,9 @@ static bool write_headers(const char *pbo, const list_t *hierarchy, size_t path_
 		meta.data_size = st.st_size;
 		if (!(str = strdup(curr->elm + path_len)))
 			return FNC_PERROR_RET(bool, false, "Could not allocate memory");
-		/* If Linux */
+#ifndef _WIN32
 		while (utils_strreplace(str, "/", "\\"));
+#endif /* _WIN32 */
 		if (!fwrite(str, strlen(str) + 1, 1, f) ||
 			!fwrite(&meta, sizeof(pbo_entry_meta_t), 1, f)) {
 			return FNC_PERROR_RET(bool, false, "Could not write to file %s", pbo);

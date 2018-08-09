@@ -50,7 +50,7 @@ static int fill_elements(
 	for (; token && it <= delims_nb; ++it)
 	{
 		if ((it + 1) <= delims_nb)
-			wt[it] = strdup(strsep(&end, delims));
+			wt[it] = strdup(utils_strsep(&end, delims));
 		else
 			wt[it] = strdup(end);
 		if (!wt[it])

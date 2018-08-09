@@ -8,14 +8,23 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#include <sys/mman.h>
+#ifdef _WIN32
+	#include <windows.h>
+#else
+	#include <sys/mman.h>
+#endif /* _WIN32 */
 #include "pbo.h"
 #include "utils.h"
 
 void pbo_close(pbo_t *pbo)
 {
+#ifdef _WIN32
+	UnmapViewOfFile(pbo->map);
+	CloseHandle(pbo->map_handle);
+#else
 	if (munmap(pbo->map, pbo->len) == -1)
 		FNC_WARN("Could not unmap %s\n", pbo->filename);
+#endif /* _WIN32 */
 	if (fclose(pbo->f) == EOF)
 		FNC_WARN("Could not close %s\n", pbo->filename);
 	free(pbo->filename);
