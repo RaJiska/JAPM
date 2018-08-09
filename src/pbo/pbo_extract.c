@@ -77,9 +77,10 @@ bool pbo_extract(const pbo_t *pbo, const char *output_dir)
 		if (!fwrite(curr_data, curr_entry->meta->data_size, 1, f) &&
 			curr_entry->meta->data_size > 0)
 			return FNC_ERROR_RET(bool, false,
-				"Could not fully write to file %s", curr_entry->filename);
+				"Could not write to file %s", curr_entry->filename);
 		fclose(f);
 		curr_data += curr_entry->meta->data_size;
 	}
+	COND_PRINTF(!ARGS->quiet, "\nFiles Bank Extracted in %s\n", output_dir);
 	return true;
 }

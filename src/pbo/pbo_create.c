@@ -81,11 +81,13 @@ bool pbo_create(const char *path, const char *pbo)
 	if (!fs_get_file_hierarchy(path, &hierarchy))
 		return false;
 	COND_PRINTF(!ARGS->quiet, "Building File Bank: \n\n");
+	for (; *(path + path_len) == '/'; ++path_len); /* Remove leading sepatator */
 	if (!write_headers(pbo, hierarchy, path_len, f) || !write_files(pbo, f, hierarchy)) {
 		list_destroy(&hierarchy, LIST_FREE_PTR, NULL);
 		return false;
 	}
 	list_destroy(&hierarchy, LIST_FREE_PTR, NULL);
 	fclose(f);
+	COND_PRINTF(!ARGS->quiet, "\nFiles Bank Built at %s\n", pbo);
 	return true;
 }
