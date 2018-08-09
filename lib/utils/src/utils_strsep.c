@@ -10,17 +10,16 @@
 
 char *utils_strsep(char **str, const char *delims)
 {
-	char *found = NULL;
+        char *start = *str;
+	char *found;
 
-        if (!str)
+        if (!*str)
                 return NULL;
-        for (size_t it = 0; delims[it]; ++it) {
-                if ((found = strchr(*str, delims[it])))
-                        break;
-        }
-        if (found) {
+        if ((found = strpbrk(start, delims))) {
                 *found = 0;
-                return found + 1;
+                *str = found + 1;
         }
-        return *str;
+        else
+                *str = NULL;
+        return start;
 }

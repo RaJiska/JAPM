@@ -68,7 +68,6 @@ static inline enum japm_action determine_action(const arguments_t *args)
 	if (S_ISDIR(st.st_mode))
 		return JAPM_ACTION_PACK;
 	return FNC_ERROR_RET(enum japm_action, JAPM_ACTION_NONE, "Wrong file type for %s", args->input);
-	*/
 }
 
 bool japm(const arguments_t *args)

@@ -33,9 +33,9 @@ bool fs_path_is_valid(const char *path)
 		}
 		if (strpbrk(wt[it], JAPM_PATH_FORBIDDEN_CHARS) ||
 			strpbrk(wt[it] + strlen(wt[it]) - 1, JAPM_PATH_FORBIDDEN_ENDCHARS)) {
-				utils_wt_destroy(wt);
-				return false;
-			}
+			utils_wt_destroy(wt);
+			return false;
+		}
 	}
 	utils_wt_destroy(wt);
 	return true;

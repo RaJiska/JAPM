@@ -75,14 +75,16 @@ bool pbo_extract(const pbo_t *pbo, const char *output_dir)
 				"support this feature yet: Skipping", curr_entry->filename);
 			continue;
 		}
+		COND_PRINTF(!ARGS->quiet, "Extracting %s\n", curr_entry->filename);
 		if (!(f = create_path_and_file(output_dir, curr_entry->filename)))
 			return false;
 		if (!fwrite(curr_data, curr_entry->meta->data_size, 1, f) &&
 			curr_entry->meta->data_size > 0)
 			return FNC_ERROR_RET(bool, false,
-				"Could not fully write to file %s", curr_entry->filename);
+				"Could not write to file %s", curr_entry->filename);
 		fclose(f);
 		curr_data += curr_entry->meta->data_size;
 	}
+	COND_PRINTF(!ARGS->quiet, "\nFiles Bank Extracted in %s\n", output_dir);
 	return true;
 }

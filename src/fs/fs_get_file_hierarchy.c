@@ -40,10 +40,13 @@ static bool recursive_retrieve(const char *path, list_t **list)
 			return false;
 		}
 		sprintf(full_path, "%s\\%s", path, file.cFileName);
-		if ((file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) && !recursive_retrieve(full_path, list)) {
-			free(full_path);
-			FindClose(find);
-			return false;
+		if ((file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+			if (!recursive_retrieve(full_path, list)) {
+				free(full_path);
+				FindClose(find);
+				return false;
+			}
+			continue;
 		}
 		if (!list_push(list, full_path)) {
 			FNC_PERROR("Could not allocate memory");
