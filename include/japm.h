@@ -18,13 +18,13 @@
 #define STRINGIFY(elm) #elm
 #define TOSTRING(elm) STRINGIFY(elm)
 
-
 #define FNC_WARN(elm, ...) utils_error(0, __FILE__ ":" TOSTRING(__LINE__) ": WARNING: " elm, ##__VA_ARGS__)
 #define FNC_WARN_RET(type, ret, elm, ...) ((type) (FNC_WARN(elm, ##__VA_ARGS__)))
 #define FNC_PERROR(elm, ...) utils_perror(0, __FILE__ ":" TOSTRING(__LINE__) ": ERROR: " elm, ##__VA_ARGS__)
 #define FNC_PERROR_RET(type, ret, elm, ...) ((type) (FNC_PERROR(elm, ##__VA_ARGS__)))
 #define FNC_ERROR(elm, ...) utils_error(0, __FILE__ ":" TOSTRING(__LINE__) ": ERROR: " elm, ##__VA_ARGS__)
 #define FNC_ERROR_RET(type, ret, elm, ...) ((type) (FNC_ERROR(elm, ##__VA_ARGS__)))
+#define COND_PRINTF(cond, fmt, ...) if (cond) printf(fmt, ##__VA_ARGS__);
 
 typedef unsigned char byte_t;
 
