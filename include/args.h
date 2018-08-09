@@ -30,5 +30,6 @@ int args_getopt(int argc, char * const argv[], const char *optstring);
 void args_retrieve(int argc, char * const *argv, arguments_t *args);
 void args_print_help(const char *myself, int exit_code);
 void args_print_version(void);
+bool args_validate(const arguments_t *args);
 
 #endif /* ARGS_H_ */

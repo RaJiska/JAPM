@@ -74,10 +74,13 @@ static bool recursive_retrieve(const char *path, list_t **list)
 			closedir(dir);
 			return false;
 		}
-		if (file->d_type == DT_DIR && !recursive_retrieve(full_path, list)) {
-			free(full_path);
-			closedir(dir);
-			return false;
+		if (file->d_type == DT_DIR) {
+			if (!recursive_retrieve(full_path, list)) {
+				free(full_path);
+				closedir(dir);
+				return false;
+			}
+			continue;
 		}
 		if (!list_push(list, full_path)) {
 			FNC_PERROR("Could not allocate memory");
@@ -93,6 +96,7 @@ static bool recursive_retrieve(const char *path, list_t **list)
 }
 #endif /* _WIN32 */
 
+/* Note: Only retrieves files */
 bool fs_get_file_hierarchy(const char *path, list_t **list)
 {
 	char *path_cleaned = strdup(path);

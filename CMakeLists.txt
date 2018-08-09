@@ -21,6 +21,7 @@ set (SRCS
 	"${SOURCE_DIR}/args/args_print_help.c"
 	"${SOURCE_DIR}/args/args_print_version.c"
 	"${SOURCE_DIR}/args/args_retrieve.c"
+	"${SOURCE_DIR}/args/args_validate.c"
 	"${SOURCE_DIR}/fs/fs_assemble_path.c"
 	"${SOURCE_DIR}/fs/fs_get_file_hierarchy.c"
 	"${SOURCE_DIR}/fs/fs_path_is_valid.c"
