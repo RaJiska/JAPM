@@ -11,6 +11,9 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#ifdef _WIN32
+	#include <windows.h>
+#endif /* _WIN32 */
 #include "japm.h"
 #include "list.h"
 
@@ -44,6 +47,9 @@ typedef struct
 {
 	FILE *f;
 	off_t len;
+#ifdef _WIN32
+	HANDLE map_handle;
+#endif /* _WIN32 */
 	byte_t *map;
 	byte_t *map_header_block;
 	byte_t *map_data_block;

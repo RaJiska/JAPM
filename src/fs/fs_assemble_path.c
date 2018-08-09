@@ -20,5 +20,5 @@ char *fs_assemble_path(const char *path, const char *file, char *buf)
 		if (!(buf = malloc(required_len)))
 			return FNC_PERROR_RET(char *, NULL, "Could not allocate memory");
 	}
-	return strcat(strcat(strcpy(buf, path), "/"), file);
+	return strcat(strcat(strcpy(buf, path), JAPM_PATH_SEP_STR), file);
 }

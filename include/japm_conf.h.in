@@ -21,6 +21,14 @@
 #define JAPM_PATH_FORBIDDEN_CHARS "<>:\"\\/|?*"
 #define JAPM_PATH_FORBIDDEN_ENDCHARS " ."
 
+#ifdef _WIN32
+	#define JAPM_PATH_SEP '\\'
+	#define JAPM_PATH_SEP_STR "\\"
+#else
+	#define JAPM_PATH_SEP '/'
+	#define JAPM_PATH_SEP_STR "/"
+#endif /* _WIN32 */
+
 #define JAPM_UNKNOWN_FILE_DIR "__JAPM__"
 #define JAPM_UNKNOWN_FILENAME "unknown"
 #define JAPM_UNKNOWN_FILEEXT ".txt"

@@ -34,7 +34,8 @@ SRC	=	utils_strreplace.c				\
 		utils_wt_destroy.c				\
 		utils_clearstr.c				\
 		utils_perror.c					\
-		utils_error.c
+		utils_error.c					\
+		utils_strsep.c
 
 SRC	:=	$(addprefix $(SRCDIR)/, $(SRC))
 

@@ -26,5 +26,6 @@ char **utils_wt_pop_front(char **wt, char **str);
 void utils_wt_destroy(char **wt);
 bool utils_strreplace(char *s, const char *from, const char *to);
 char *utils_clearstr(char *s);
+char *utils_strsep(char **str, const char *delims);
 
 #endif /* !UTIL_H_ */

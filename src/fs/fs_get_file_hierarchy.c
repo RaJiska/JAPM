@@ -10,10 +10,55 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <errno.h>
+#ifdef _WIN32
+	#include <windows.h>
+#endif /* _WIN32 */
 #include "fs.h"
 #include "japm.h"
 #include "utils.h"
 
+#ifdef _WIN32
+static bool recursive_retrieve(const char *path, list_t **list)
+{
+	char *full_path = malloc(strlen(path) + 4 + 1);
+	WIN32_FIND_DATA file;
+	HANDLE find;
+
+	if (!full_path)
+		return FNC_PERROR_RET(bool, false, "Could not allocate memory");
+	snprintf(full_path, PATH_MAX + 4, "%s\\*.*", path);
+	if (!(find = FindFirstFile(full_path, &file)))
+		return false;
+	free(full_path);
+	do
+	{
+		if (!strcmp(".", file.cFileName) || !strcmp("..", file.cFileName))
+			continue;
+		if (!(full_path = malloc(strlen(path) + 1 + strlen(file.cFileName) + 1))) {
+			FNC_PERROR("Could not allocate memory");
+			FindClose(find);
+			return false;
+		}
+		sprintf(full_path, "%s\\%s", path, file.cFileName);
+		if ((file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+			if (!recursive_retrieve(full_path, list)) {
+				free(full_path);
+				FindClose(find);
+				return false;
+			}
+			continue;
+		}
+		if (!list_push(list, full_path)) {
+			FNC_PERROR("Could not allocate memory");
+			free(full_path);
+			FindClose(find);
+			return false;
+		}
+	} while (FindNextFile(find, &file));
+	FindClose(find);
+	return true;
+}
+#else
 /* TODO: Multithread the crawling */
 static bool recursive_retrieve(const char *path, list_t **list)
 {
@@ -25,7 +70,7 @@ static bool recursive_retrieve(const char *path, list_t **list)
 		return FNC_PERROR_RET(bool, false, "Could not open directory %s", path);
 	errno = 0;
 	while ((file = readdir(dir)) && !errno) {
-		/* FOR LINUX */
+
 		if (!strcmp(".", &file->d_name[0]) || !strcmp("..", &file->d_name[0]))
 			continue;
 		if (!(full_path = fs_assemble_path(path, &file->d_name[0], NULL))) {
@@ -52,6 +97,7 @@ static bool recursive_retrieve(const char *path, list_t **list)
 	closedir(dir);
 	return true;
 }
+#endif /* _WIN32 */
 
 /* Note: Only retrieves files */
 bool fs_get_file_hierarchy(const char *path, list_t **list)
@@ -60,8 +106,11 @@ bool fs_get_file_hierarchy(const char *path, list_t **list)
 
 	if (!path)
 		return FNC_PERROR_RET(bool, false, "Could not allocated memory");
-	/* TODO: Call clean Windows on WIN32 */
+#ifdef _WIN32
+	fs_path_clean_windows(path_cleaned);
+#else
 	fs_path_clean_linux(path_cleaned);
+#endif /* _WIN32 */
 	*list = NULL;
 	if (!recursive_retrieve(path_cleaned, list)) {
 		list_destroy(list, LIST_FREE_PTR, NULL);

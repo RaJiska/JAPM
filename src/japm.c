@@ -34,8 +34,7 @@ static inline char *get_pack_output_file(char *args_input, char *args_output)
 	if (!(output_file = malloc(strlen(last_link) + 4 + 1)))
 		return FNC_PERROR_RET(char *, NULL, "Could not allocate memory");
 	strcpy(output_file, last_link);
-	/* Linux */
-	while (utils_strreplace(output_file, "/", NULL));
+	while (utils_strreplace(output_file, JAPM_PATH_SEP_STR, NULL));
 	strcat(output_file, ".pbo");
 	return output_file;
 }
@@ -59,6 +58,7 @@ static inline enum japm_action determine_action(const arguments_t *args)
 
 	if (stat(args->input, &st) == -1)
 		return FNC_PERROR_RET(enum japm_action, JAPM_ACTION_NONE, "Could not stat %s", args->input);
+
 	if (S_ISREG(st.st_mode)) {
 		if ((buf = strstr(args->input, ".pbo")) && !strcmp(buf, ".pbo"))
 			return JAPM_ACTION_UNPACK;

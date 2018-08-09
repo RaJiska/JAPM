@@ -52,9 +52,11 @@ static bool write_headers(const char *pbo, const list_t *hierarchy, size_t path_
 		if (stat(curr->elm, &st) == -1)
 			return FNC_PERROR_RET(bool, false, "Could not stat file %s", curr->elm);
 		meta.data_size = st.st_size;
-		if (!(str = strdup(curr->elm + path_len)))
+		if (!(str = strdup(curr->elm + path_len + 1)))
 			return FNC_PERROR_RET(bool, false, "Could not allocate memory");
+#ifndef _WIN32
 		while (utils_strreplace(str, "/", "\\"));
+#endif /* _WIN32 */
 		if (!fwrite(str, strlen(str) + 1, 1, f) ||
 			!fwrite(&meta, sizeof(pbo_entry_meta_t), 1, f)) {
 			return FNC_PERROR_RET(bool, false, "Could not write to file %s", pbo);
@@ -81,13 +83,13 @@ bool pbo_create(const char *path, const char *pbo)
 	if (!fs_get_file_hierarchy(path, &hierarchy))
 		return false;
 	COND_PRINTF(!ARGS->quiet, "Building File Bank: \n\n");
-	for (; *(path + path_len) == '/'; ++path_len); /* Remove leading sepatator */
+	for (; *(path + path_len) == JAPM_PATH_SEP; ++path_len); /* Remove leading sepatator */
 	if (!write_headers(pbo, hierarchy, path_len, f) || !write_files(pbo, f, hierarchy)) {
 		list_destroy(&hierarchy, LIST_FREE_PTR, NULL);
 		return false;
 	}
 	list_destroy(&hierarchy, LIST_FREE_PTR, NULL);
 	fclose(f);
-	COND_PRINTF(!ARGS->quiet, "\nFiles Bank Built at %s\n", pbo);
+	COND_PRINTF(!ARGS->quiet, "\nFiles Bank Built in %s\n", pbo);
 	return true;
 }
