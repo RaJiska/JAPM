@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include "japm_conf.h"
 #include "args.h"
 
@@ -26,7 +27,7 @@
 #define FNC_ERROR_RET(type, ret, elm, ...) ((type) (FNC_ERROR(elm, ##__VA_ARGS__)))
 #define COND_PRINTF(cond, fmt, ...) if (cond) printf(fmt, ##__VA_ARGS__);
 
-typedef unsigned char byte_t;
+typedef uint8_t byte_t;
 
 enum japm_action
 {

@@ -7,10 +7,12 @@
 
 #include <stdio.h>
 #include "japm.h"
+#include "ringbuf.h"
 
 int main(int argc, char * const *argv)
 {
 	arguments_t args = { 0 };
+	ringbuf_t buf;
 
 	if (argc == 0)
 		return EXIT_FAILURE;
