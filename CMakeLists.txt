@@ -17,10 +17,6 @@ set (LIB_DIR "${PROJECT_SOURCE_DIR}/lib")
 set (SRCS
 	"${SOURCE_DIR}/main.c"
 	"${SOURCE_DIR}/japm.c"
-	"${SOURCE_DIR}/ringbuf/ringbuf_init.c"
-	"${SOURCE_DIR}/ringbuf/ringbuf_read.c"
-	"${SOURCE_DIR}/ringbuf/ringbuf_write.c"
-	"${SOURCE_DIR}/ringbuf/ringbuf_destroy.c"
 	"${SOURCE_DIR}/args/args_getopt.c"
 	"${SOURCE_DIR}/args/args_print_help.c"
 	"${SOURCE_DIR}/args/args_print_version.c"
@@ -39,6 +35,7 @@ set (SRCS
 	"${SOURCE_DIR}/pbo/pbo_get_checksum_block.c"
 	"${SOURCE_DIR}/pbo/pbo_retrieve_entries.c"
 	"${SOURCE_DIR}/pbo/pbo_extract.c"
+	"${SOURCE_DIR}/pbo/pbo_decompress.c"
 	"${SOURCE_DIR}/pbo/pbo_close.c"
 )
 

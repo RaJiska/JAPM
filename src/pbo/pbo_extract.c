@@ -70,15 +70,12 @@ bool pbo_extract(const pbo_t *pbo, const char *output_dir)
 
 	for (; curr; curr = curr->next) {
 		curr_entry = curr->elm;
-		if (curr_entry->meta->packing != PBO_PACK_UNCOMPRESSED) {
-			FNC_WARN("File %s compressed - " JAPM_NAME_SHORT " does not"
-				"support this feature yet: Skipping", curr_entry->filename);
-			continue;
-		}
 		COND_PRINTF(!ARGS->quiet, "Extracting %s\n", curr_entry->filename);
 		if (!(f = create_path_and_file(output_dir, curr_entry->filename)))
 			return false;
-		if (!fwrite(curr_data, curr_entry->meta->data_size, 1, f) &&
+		if (curr_entry->meta->packing == PBO_PACK_PACKED)
+			pbo_decompress(f, curr_entry, curr_data);
+		else if (!fwrite(curr_data, curr_entry->meta->data_size, 1, f) &&
 			curr_entry->meta->data_size > 0)
 			return FNC_ERROR_RET(bool, false,
 				"Could not write to file %s", curr_entry->filename);

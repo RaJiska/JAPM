@@ -28,6 +28,8 @@ static const unsigned char PBO_MAGIC[] = {
 #define PBO_PACK_PACKED 0x43707273
 #define PBO_PACK_PE 0x56657273
 
+#define PBO_DECOMPRESS_FACTOR 3
+
 typedef struct
 {
 	uint32_t packing;
@@ -65,6 +67,7 @@ byte_t *pbo_get_data_block(byte_t *header_block);
 byte_t *pbo_get_checksum_block(byte_t *map, size_t file_len);
 bool pbo_retrieve_entries(pbo_t *pbo);
 bool pbo_extract(const pbo_t *pbo, const char *output_dir);
+void pbo_decompress(FILE *f, const pbo_entry_t *entry, const byte_t *data_start);
 void pbo_close(pbo_t *pbo);
 
 #endif /* PBO_H_ */
