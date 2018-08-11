@@ -7,8 +7,9 @@
 
 #include <string.h>
 #include "pbo.h"
+#include "utils.h"
 
-static inline void print_from_ptr(
+static inline bool print_from_ptr(
 	FILE *f,
 	byte_t *buffer,
 	size_t *bytes_buffered,
@@ -17,12 +18,15 @@ static inline void print_from_ptr(
 	uint16_t real_ptr = (ptr >> 8) | (((ptr >> 4) & 0xF) << 8);
 	int to_read = (ptr & 0xF) + 3;
 	byte_t data_buf[18];
-	size_t start_offset = *bytes_buffered - real_ptr;
+	ssize_t start_offset = *bytes_buffered - real_ptr;
 
-	for (int it = 0; it < to_read; ++it) {
+	if (start_offset < 0)
+		return FNC_WARN_RET(bool, false, "Pointer offset < 0 (%lld), skipping file", start_offset);
+	for (ssize_t it = 0; it < to_read; ++it) {
 		fwrite(buffer + start_offset + it, 1, 1, f);
 		buffer[(*bytes_buffered)++] = buffer[start_offset + it];
 	}
+	return true;
 }
 
 void pbo_decompress(FILE *f, const pbo_entry_t *entry, const byte_t *data_start)
@@ -43,8 +47,9 @@ void pbo_decompress(FILE *f, const pbo_entry_t *entry, const byte_t *data_start)
 			buffer[bytes_buffered++] = data_start[bytes_read++];
 		}
 		else { /* Bit is 0: Interpret as Ptr */
-			print_from_ptr(f, &buffer[0], &bytes_buffered,
-				(data_start[bytes_read] << 8) | data_start[bytes_read + 1]);
+			if (!print_from_ptr(f, &buffer[0], &bytes_buffered,
+			(data_start[bytes_read] << 8) | data_start[bytes_read + 1]))
+			break; /* Unhandled case *yet* */
 			bytes_read += 2;
 		}
 		format_byte >>= 1;

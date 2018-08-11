@@ -42,10 +42,13 @@ static inline char *get_pack_output_file(char *args_input, char *args_output)
 static inline char *get_unpack_output_file(char *args_input, char *args_output)
 {
 	char *output_file;
+	char *last_link;
 
 	if (args_output)
 		return args_output;
-	if (!(output_file = strdup(fs_path_get_last_link(args_input))))
+	last_link = fs_path_get_last_link(args_input);
+	for (; *last_link == JAPM_PATH_SEP; ++last_link);
+	if (!(output_file = strdup(last_link)))
 		return FNC_PERROR_RET(char *, NULL, "Could not allocate memory");
 	*strstr(output_file, ".pbo") = 0;
 	return output_file;
