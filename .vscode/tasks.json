@@ -4,7 +4,7 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Build",
+			"label": "Build Linux x86_64",
 			"type": "shell",
 			"command": "mkdir -p build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Debug && make",
 			"group": {
@@ -15,8 +15,25 @@
 				"echo": true,
 				"reveal": "silent",
 				"focus": true,
-				"panel":"shared"
-			}
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Build Windows x86_64",
+			"type": "shell",
+			"command": "mkdir -p build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../windows.cmake && make",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "silent",
+				"focus": true,
+				"panel": "shared"
+			},
+			"problemMatcher": []
 		}
 	]
 }
