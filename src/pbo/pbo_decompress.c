@@ -20,8 +20,11 @@ static inline bool print_from_ptr(
 	byte_t data_buf[18];
 	ssize_t start_offset = *bytes_buffered - real_ptr;
 
-	if (start_offset < 0)
-		return FNC_WARN_RET(bool, false, "Pointer offset < 0 (%lld), skipping file", start_offset);
+	if (start_offset < 0) {
+		if (!ARGS->no_warning)
+			FNC_WARN("Pointer offset < 0 (%lld), skipping file", start_offset);
+		return false;
+	}
 	for (ssize_t it = 0; it < to_read; ++it) {
 		fwrite(buffer + start_offset + it, 1, 1, f);
 		buffer[(*bytes_buffered)++] = buffer[start_offset + it];

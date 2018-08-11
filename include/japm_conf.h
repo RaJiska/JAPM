@@ -15,7 +15,7 @@
 #define JAPM_NAME_SHORT "JAPM"
 #define JAPM_NAME_COMPLETE "Just Another PBO Manager"
 #define JAPM_VERSION_MAJOR 0
-#define JAPM_VERSION_MINOR 2
+#define JAPM_VERSION_MINOR 8
 
 #define JAPM_PATH_MAX_LENGTH 260
 #define JAPM_PATH_FORBIDDEN_CHARS "<>:\"\\/|?*"

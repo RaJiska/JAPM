@@ -21,7 +21,8 @@ static char *get_unknown_filename(char *buf)
 		JAPM_UNKNOWN_FILE_DIR, JAPM_UNKNOWN_FILENAME,
 		unknown_file_no, JAPM_UNKNOWN_FILEEXT);
 	++unknown_file_no;
-	FNC_WARN("Entry with special name renamed -> %s", buf);
+	if (!ARGS->no_warning)
+		FNC_WARN("Entry with special name renamed -> %s", buf);
 	return buf;
 }
 

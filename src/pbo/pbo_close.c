@@ -22,10 +22,10 @@ void pbo_close(pbo_t *pbo)
 	UnmapViewOfFile(pbo->map);
 	CloseHandle(pbo->map_handle);
 #else
-	if (munmap(pbo->map, pbo->len) == -1)
+	if (munmap(pbo->map, pbo->len) == -1 && !ARGS->no_warning)
 		FNC_WARN("Could not unmap %s\n", pbo->filename);
 #endif /* _WIN32 */
-	if (fclose(pbo->f) == EOF)
+	if (fclose(pbo->f) == EOF && !ARGS->no_warning)
 		FNC_WARN("Could not close %s\n", pbo->filename);
 	free(pbo->filename);
 	while (pbo->entries) {

@@ -65,7 +65,7 @@ static inline enum japm_action determine_action(const arguments_t *args)
 	if (S_ISREG(st.st_mode)) {
 		if ((buf = strstr(args->input, ".pbo")) && !strcmp(buf, ".pbo"))
 			return JAPM_ACTION_UNPACK;
-		else
+		else if (!ARGS->no_warning)
 			FNC_WARN("Input file (%s) does not have the .pbo extension: skipping", args->input);
 	}
 	if (S_ISDIR(st.st_mode))

@@ -10,7 +10,7 @@
 
 void args_print_version(void)
 {
-	printf(JAPM_NAME_SHORT " (" JAPM_NAME_COMPLETE ") version %d.%d compiled on " __TIMESTAMP__ "\n"
+	printf(JAPM_NAME_SHORT " (" JAPM_NAME_COMPLETE ") version %d.%d compiled on " __DATE__ " " __TIME__ "\n"
 		"\n"
 		"Copyright (C) " JAPM_AUTHOR " <" JAPM_AUTHOR_WEBSITE ">\n"
 		"License " JAPM_LICENSE " <" JAPM_LICENSE_WEBSITE ">\n",

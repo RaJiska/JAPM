@@ -8,7 +8,7 @@ set (JAPM_LICENSE_WEBSITE "\"https://opensource.org/licenses/BSD-3-Clause\"")
 set (JAPM_NAME_SHORT "\"JAPM\"")
 set (JAPM_NAME_COMPLETE "\"Just Another PBO Manager\"")
 set (JAPM_VERSION_MAJOR 0)
-set (JAPM_VERSION_MINOR 2)
+set (JAPM_VERSION_MINOR 8)
 set (JAPM_PATH_MAX_LENGTH 260)
 
 set (INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
@@ -67,7 +67,7 @@ endif()
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Winit-self -Wwrite-strings \
 	-Wcast-align -Wshadow -Wredundant-decls -Wfloat-equal -Wunreachable-code \
 	-Wundef -Wlogical-op -Winline -Wdouble-promotion -Wno-pointer-sign \
-	-Wno-unused-variable"
+	-Wno-unused-variable -fno-stack-protector"
 )
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Ofast")
 
