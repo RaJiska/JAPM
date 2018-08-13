@@ -80,7 +80,6 @@ bool japm(const arguments_t *args)
 	char *output_file;
 
 	ARGS = args;
-	if (args)
 	switch (action)
 	{
 	case JAPM_ACTION_PACK:

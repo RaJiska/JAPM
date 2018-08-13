@@ -5,6 +5,7 @@
  * Created	: Wed Aug 8th 16:50:17 2018
  */
 
+#include <stdio.h>
 #include "japm.h"
 #include "args.h"
 
