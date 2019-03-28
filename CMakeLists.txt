@@ -67,7 +67,7 @@ endif()
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Winit-self -Wwrite-strings \
 	-Wcast-align -Wshadow -Wredundant-decls -Wfloat-equal -Wunreachable-code \
 	-Wundef -Wlogical-op -Winline -Wdouble-promotion -Wno-pointer-sign \
-	-Wno-unused-variable -fno-stack-protector"
+	-Wno-unused-variable -fno-stack-protector -std=gnu11"
 )
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Ofast")
 
