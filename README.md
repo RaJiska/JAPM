@@ -14,6 +14,12 @@ $ cmake ..
 $ make
 ```
 
+#### Linux (Docker)
+```
+$ docker build -t japm .
+$ docker run --rm -it japm -h
+```
+
 #### Windows (cross-building)
 ```
 $ mkdir build && cd build
@@ -33,6 +39,8 @@ OPTIONS
         -w      No warning
         -v      Display version and discard other options
 ```
+
+It is possible to run a pre-compiled version of JAPM through Docker using [rajiska/japm](https://hub.docker.com/r/rajiska/japm) image.
 
 ## Credits
 [SHA1 Library](https://github.com/clibs/sha1) by Steve Reid

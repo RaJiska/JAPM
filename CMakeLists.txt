@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.6)
-project (JAPM)
+project (JAPM C)
 
 set (JAPM_AUTHOR "\"Doriann \\\"Ra'Jiska\\\" Corlouër\"")
 set (JAPM_AUTHOR_WEBSITE "\"http://rajiska.fr\"")
